@@ -3,9 +3,14 @@ import pyinaturalist
 
 class UserData:
     def __init__(self, id):
-        self.id = id
-        f = pyinaturalist.get_user_by_id(self.id)
 
+        try:
+            id = int(id)
+            f = pyinaturalist.get_user_by_id(id)
+        except ValueError:
+            f = pyinaturalist.get_users_autocomplete(q=id)['results'][0]
+
+        self.id = f['id']
         self.login = f['login']
         self.login_autocomplete = f['login_autocomplete']
         self.login_exact = f['login_exact']
